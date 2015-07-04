@@ -1,0 +1,47 @@
+language: python
+
+sudo: false
+
+addons:
+    postgresql: "9.4"
+
+python:
+    - 3.4
+
+env:
+    global:
+        secure: UmNKNYhivdYf9Nm85vnvkPz2ZCEI9GuoQVBwj32alqq1PjUNyIqiGn1pp+J9m/KEyyJTGh8Hlm+57SE0LM7U1/sfu4Rx7hDJNzAbwFo1SJN98nksIPz9CexeaYcKK6z2Cx5rcHi+x39rNNrykXXOMFhwrLuQmKcMrbecylW65j0=
+
+before_cache:
+    - find $HOME/virtualenv -name CslBot.egg-link -delete
+
+cache:
+    directories:
+    - $HOME/virtualenv
+
+install:
+    # Hack to prevent setuptools being upgraded and screwing up the cache.
+    - pip install -U flake8 sphinx psycopg2 -e . setuptools==$(pip show setuptools|sed -n "s#^Version. \(.*\)#\1#p")
+
+before_script:
+    - psql -U postgres -c 'create database ircbot'
+    - sed "s#engine:#\0 postgresql://postgres@/ircbot#" config.example > config.cfg
+    - git clone git://github.com/tjcsl/cslbot-tjhsst.git commands/tjhsst
+    - cp helpers/groups.{example,cfg}
+
+script:
+    - flake8 --max-line-length=1000 .
+    - ./scripts/test.py
+    - ./scripts/gen_babble.py
+    - ./scripts/parselogs.py /tmp/ircbot
+    - ./scripts/parsedata.py /tmp/ircbot
+    - ./scripts/gendocs.sh
+
+after_success:
+    ./scripts/deploy_docs.sh
+
+notifications:
+  irc:
+      channels: "chat.freenode.net#tjcsl-cslbot"
+      skip_join: true
+      use_notice: true

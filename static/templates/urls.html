@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Url Log{% endblock %}
+{% block content %}
+<ol class="list-group">
+    {% for x in urls %}
+        {% set url = x.url|trim|e %}
+        <li class="list-group-item">
+            <a href="{{ url }}">
+                {% if x.title == 'Image' %}
+                    <img class="img-responsive" alt="" src="{{ url }}" />
+                {% elif x.title == 'No Title Found' %}
+                    {{ url }}
+                {% else %}
+                    {{ x.title|trim|e }}
+                {% endif %}
+            </a>
+          {{ x.time.strftime('%I:%M %p, %a, %b %d, %Y') }}
+        </li>
+    {% endfor %}
+</ol>
+{% endblock %}

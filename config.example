@@ -1,0 +1,53 @@
+[core]
+host: irc.freenode.net
+serverport: 2688
+ircport: 6667
+ssl: False
+ipv6: False
+sasl: False
+nick: exampleBot
+channel: #channel
+ctrlchan: #channel-control
+extrachans:
+cmdchar: !
+altcmdchars: fwil, @, ~
+url: http://example.com/irc/
+nickregex: [a-zA-Z0-9_\|`\^-]
+chanregex: [&#+!][^, \x07]+
+extracommands:
+extrahooks:
+[groups]
+hooks: core, optional
+commands: admin, core, useful, optional
+[auth]
+ctrlpass:
+serverpass:
+ctrlkey:
+admins: admin1, admin2
+[db]
+engine:
+geoip: static/geoip.db
+[alembic]
+script_location: alembic
+[feature]
+nickserv: True
+server: True
+prettyerrors: True
+lazyregex: True
+hooks: True
+capskick: True
+nickkick: True
+linkread: True
+[api]
+dictionaryapikey:
+weatherapikey:
+ebayapikey:
+githubapikey:
+githubrepo:
+wolframapikey:
+translateid:
+translatesecret:
+fmlkey:
+googleapikey:
+xkcdsearchid:
+googlesearchid:

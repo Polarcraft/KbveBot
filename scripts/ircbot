@@ -1,0 +1,14 @@
+#!/sbin/runscript
+# Copyright 1999-2013 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+command="/home/ircbot/bot/bot.py"
+start_stop_daemon_args="-u ircbot --stdout=/var/log/irc/bot.out --stderr=/var/log/irc/bot.err"
+command_background=1
+pidfile="/run/ircbot.pid"
+
+depend() {
+	use net
+        need postgresql-9.4
+}
+
